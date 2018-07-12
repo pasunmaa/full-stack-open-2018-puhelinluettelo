@@ -54,12 +54,13 @@ app.get('/info', (req, res) => {
         second: '2-digit',
         //timeZone: 'Helsink/Finland'
     })
+    timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     //console.log(timestamp) //, timestamp.toString())
     res.send(
         '<div>puhelinluettelossa on ' +
         persons.length +
         ' henkilön tiedot</div></br>' +
-        timestamp
+        timestamp + " " + timezone
     )
 })
 
