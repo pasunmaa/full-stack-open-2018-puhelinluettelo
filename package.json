@@ -1,0 +1,24 @@
+{
+  "name": "full-stack-open-2018-puhelinluettelo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pasunmaa/full-stack-open-2018-puhelinluettelo.git"
+  },
+  "keywords": [
+    "puhelinluettelo",
+    "fullstack",
+    "node"
+  ],
+  "author": "Petri Asunmaa",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pasunmaa/full-stack-open-2018-puhelinluettelo/issues"
+  },
+  "homepage": "https://github.com/pasunmaa/full-stack-open-2018-puhelinluettelo#readme"
+}
