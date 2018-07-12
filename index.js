@@ -1,8 +1,8 @@
 const express = require('express')
 const app = express()
-//const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 
-//app.use(bodyParser.json())
+app.use(bodyParser.json())
 
 let persons = [
   {
@@ -64,11 +64,12 @@ app.get('/info', (req, res) => {
     )
 })
 
-app.get('/api/persons', (req, res) => {
-    res.json(persons)
+app.get('/api/persons', (request, response) => {
+    //console.log('GET HEADERS', request.headers)
+    response.json(persons)
   })
   
-app.get('/api/person/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     const person = persons.find(person => person.id === id)
 
@@ -79,7 +80,29 @@ app.get('/api/person/:id', (request, response) => {
     }
 })
 
-app.delete('/api/delete/:id', (request, response) => {
+
+const generateId = () => {
+  return Math.round((Math.random() * 100000000))
+}
+
+app.post('/api/persons', (request, response) => {
+  const body = request.body
+  console.log('POST BODY', body)
+  console.log('POST HEADERS', request.headers)
+
+  const person = {
+    name: body.name,
+    phonenumber: body.phonenumber,
+    id: generateId()
+  }
+
+  persons = persons.concat(person)
+
+  return response.status(200)  // Success
+})
+
+app.delete('/api/persons/:id', (request, response) => {
+    //console.log('DELETE HEADERS', request.headers)
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
   
