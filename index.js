@@ -44,10 +44,29 @@ app.get('/', (req, res) => {
       'type http:/localhost:3001/api/persons to see it')
 })
 
-app.get('/api/persons', (req, res) => {
-  res.json(persons)
+app.get('/info', (req, res) => {
+    timestamp = new Date().toLocaleString('en-FI', {  
+        day : 'numeric',
+        month : 'short',
+        year : 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+        //timeZone: 'Helsink/Finland'
+    })
+    //console.log(timestamp) //, timestamp.toString())
+    res.send(
+        '<div>puhelinluettelossa on ' +
+        persons.length +
+        ' henkilön tiedot</div></br>' +
+        timestamp
+    )
 })
 
+app.get('/api/persons', (req, res) => {
+    res.json(persons)
+  })
+  
 const PORT = 3001
 app.listen(PORT, () => {
   console.log(`Puhelinluettelo server running on port ${PORT}`)
