@@ -87,18 +87,28 @@ const generateId = () => {
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
-  console.log('POST BODY', body)
-  console.log('POST HEADERS', request.headers)
+  //console.log('POST BODY', body)
+  //console.log('POST HEADERS', request.headers)
 
   const person = {
     name: body.name,
     phonenumber: body.phonenumber,
     id: generateId()
   }
+  console.log('Person = ', person)
 
-  persons = persons.concat(person)
-
-  return response.status(200)  // Success
+  if (body.name === "" || body.name === undefined || 
+      body.phonenumber === "" || body.phonenumber === undefined)
+    return response.status(400)
+      .json({ error: 'name or phone number missing' })
+  else if (persons.findIndex(person => person.name === body.name) !== -1) {
+    return response.status(400)
+      .json({ error: 'name must be unique' })
+  }
+  else {
+    persons = persons.concat(person)
+    return response.status(200)  // Success
+  }
 })
 
 app.delete('/api/persons/:id', (request, response) => {
