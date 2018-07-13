@@ -1,8 +1,10 @@
 const express = require('express')
+const morgan = require('morgan')
 const app = express()
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.json())
+app.use(morgan('tiny'))
 
 let persons = [
   {
@@ -95,7 +97,7 @@ app.post('/api/persons', (request, response) => {
     phonenumber: body.phonenumber,
     id: generateId()
   }
-  console.log('Person = ', person)
+  //console.log('Person = ', person)
 
   if (body.name === "" || body.name === undefined || 
       body.phonenumber === "" || body.phonenumber === undefined)
@@ -107,7 +109,7 @@ app.post('/api/persons', (request, response) => {
   }
   else {
     persons = persons.concat(person)
-    return response.status(200)  // Success
+    return response.status(200).end()  // Success
   }
 })
 
