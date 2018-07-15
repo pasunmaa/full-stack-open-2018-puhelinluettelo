@@ -4,6 +4,7 @@
   "description": "Helsinki Open University Full Stack 2018 course's excercise Puhelinluettelo ",
   "main": "index.js",
   "scripts": {
+    "//": "start: micro",
     "start": "node index.js",
     "watch": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,6 +12,9 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/pasunmaa/full-stack-open-2018-puhelinluettelo.git"
+  },
+  "now": {
+    "alias": "petria-puhelinluettelo-3-10"
   },
   "keywords": [
     "puhelinluettelo",
@@ -25,7 +29,8 @@
   "homepage": "https://github.com/pasunmaa/full-stack-open-2018-puhelinluettelo#readme",
   "dependencies": {
     "cors": "^2.8.4",
-    "express": "^4.16.3"
+    "express": "^4.16.3",
+    "micro": "latest"
   },
   "devDependencies": {
     "morgan": "^1.9.0",

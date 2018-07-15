@@ -11,7 +11,6 @@ morgan.token('respdata', getResponseData = (req, res) => {
 const app = express()
 app.use(cors())
 app.use(bodyParser.json())
-//app.use(morgan('tiny'))
 app.use(morgan(':method :url :respdata :status :res[content-length] - :response-time ms'))
 
 let persons = [
@@ -51,7 +50,7 @@ app.get('/', (req, res) => {
   res.send(
       '<h1>Hello World, this is Puhelinluettelo!</h1>' +
       '<br/>' +
-      'type http:/localhost:3001/api/persons to see it')
+      'type https://petria-puhelinluettelo-3-10.now.sh/api/persons to see it')
 })
 
 app.get('/info', (req, res) => {
@@ -129,7 +128,11 @@ app.delete('/api/persons/:id', (request, response) => {
     response.status(204).end()
 })
 
-const PORT = 3001
-app.listen(PORT, () => {
-  console.log(`Puhelinluettelo server running on port ${PORT}`)
-})
+//module.exports = () => { // module.exports is for Zeit's Now
+  const PORT = 3001
+  app.listen(PORT, () => {
+    console.log(`Puhelinluettelo server running on port ${PORT}`)
+  })
+//}
+
+//module.exports = () => 'Ahoy, world!' 
