@@ -1,1 +1,1 @@
-DELETE https://petria-puhelinluettelo-3-10.now.sh/api/persons/3
+DELETE https://petria-puhelinluettelo-3-11.now.sh/api/persons/3

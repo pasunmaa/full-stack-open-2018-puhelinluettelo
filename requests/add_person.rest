@@ -1,4 +1,4 @@
-POST https://petria-puhelinluettelo-3-10.now.sh/api/persons
+POST https://petria-puhelinluettelo-3-11.now.sh/api/persons
 content-type: application/json
 
 {

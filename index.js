@@ -12,6 +12,7 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 app.use(morgan(':method :url :respdata :status :res[content-length] - :response-time ms'))
+app.use(express.static('build'))
 
 let persons = [
   {
@@ -46,13 +47,6 @@ let persons = [
   }
 ]
 
-app.get('/', (req, res) => {
-  res.send(
-      '<h1>Hello World, this is Puhelinluettelo!</h1>' +
-      '<br/>' +
-      'type https://petria-puhelinluettelo-3-10.now.sh/api/persons to see it')
-})
-
 app.get('/info', (req, res) => {
     timestamp = new Date().toLocaleString('en-FI', {  
         day : 'numeric',
@@ -66,7 +60,8 @@ app.get('/info', (req, res) => {
     timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     //console.log(timestamp) //, timestamp.toString())
     res.send(
-        '<div>puhelinluettelossa on ' +
+        '<h1>Hello World, this is Puhelinluettelo!</h1>' +
+        '<br/>' + '<div>puhelinluettelossa on ' +
         persons.length +
         ' henkilön tiedot</div></br>' +
         timestamp + " " + timezone
