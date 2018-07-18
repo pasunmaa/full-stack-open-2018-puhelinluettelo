@@ -15,14 +15,6 @@ app.use(bodyParser.json())
 app.use(morgan(':method :url :respdata :status :res[content-length] - :response-time ms'))
 app.use(express.static('build'))
 
-const formatPerson = (person) => {
-  //console.log(person)
-  return {
-    name: person.name,
-    phonenumber: person.phonenumber,
-    id: person._id
-  }
-}
 
 app.get('/info', (req, res) => {
     timestamp = new Date().toLocaleString('en-FI', {  
@@ -51,7 +43,7 @@ app.get('/api/persons', (request, response) => {
       .find({})
       .then(persons => {
         //console.log(persons)
-        return response.json(persons.map(formatPerson))
+        return response.json(persons.map(Person.format))
     })
     .catch(error => {
       console.log('Get all persons failed', error)
@@ -64,7 +56,7 @@ app.get('/api/persons/:id', (request, response) => {
     Person
       .findById(request.params.id)
       .then(person => {
-        response.json(formatPerson(person))
+        response.json(new Person.format(person))
       })
       .catch(error => {
         console.log('person.find failed', error)
@@ -97,7 +89,9 @@ app.post('/api/persons', (request, response) => {
       .then(savedPerson => {
           console.log('lisätään henkilö ', person.name, ' numero ', person.phonenumber, ' luetteloon.')
           //mongoose.connection.close()  // where is mongoose connection closed?
-          return response.json(formatPerson(savedPerson))
+          const p1 = new Person.format(savedPerson)
+          //console.log(p1)
+          return response.json(p1)
           //return response.status(200).end()  // Success
       })
       .catch(error => 
