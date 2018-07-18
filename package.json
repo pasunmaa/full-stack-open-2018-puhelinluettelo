@@ -14,7 +14,11 @@
     "url": "git+https://github.com/pasunmaa/full-stack-open-2018-puhelinluettelo.git"
   },
   "now": {
-    "alias": "petria-puhelinluettelo-3-11"
+    "alias": "petria-puhelinluettelo-3-11",
+    "env": {
+      "DbUserPuhLuet ": "@DbUserPuhLuet-key",
+      "DbPasswordPuhLuet  ": "@DbPasswordPuhLuet-key"
+    }
   },
   "keywords": [
     "puhelinluettelo",

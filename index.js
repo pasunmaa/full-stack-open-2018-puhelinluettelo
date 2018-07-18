@@ -2,6 +2,7 @@ const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const Person = require('./models/person')
 
 morgan.token('respdata', getResponseData = (req, res) => {
   //console.log(req.body)
@@ -14,38 +15,14 @@ app.use(bodyParser.json())
 app.use(morgan(':method :url :respdata :status :res[content-length] - :response-time ms'))
 app.use(express.static('build'))
 
-let persons = [
-  {
-    "name": "Arto Hellas",
-    "phonenumber": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Martti Tienari",
-    "phonenumber": "040-123456",
-    "id": 2
-  },
-  {
-    "name": "Arto Järvinen",
-    "phonenumber": "040-123456",
-    "id": 3
-  },
-  {
-    "name": "Lea Kutvonen",
-    "phonenumber": "040-123456",
-    "id": 4
-  },
-  {
-    "id": 5,
-    "name": "Petri Asunmaa",
-    "phonenumber": "040-7224824"
-  },
-  {
-    "id": 6,
-    "name": "Ville Virtanen",
-    "phonenumber": "040-987654321"
+const formatPerson = (person) => {
+  //console.log(person)
+  return {
+    name: person.name,
+    phonenumber: person.phonenumber,
+    id: person._id
   }
-]
+}
 
 app.get('/info', (req, res) => {
     timestamp = new Date().toLocaleString('en-FI', {  
@@ -70,64 +47,78 @@ app.get('/info', (req, res) => {
 
 app.get('/api/persons', (request, response) => {
     //console.log('GET HEADERS', request.headers)
-    response.json(persons)
-  })
+    Person
+      .find({})
+      .then(persons => {
+        //console.log(persons)
+        return response.json(persons.map(formatPerson))
+    })
+    .catch(error => {
+      console.log('Get all persons failed', error)
+      //response.status(404).end()
+    })
+})
   
 app.get('/api/persons/:id', (request, response) => {
-    const id = Number(request.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if (person) {
-        response.json(person)
-    } else {
-        response.status(404).end()
-    }
+    //console.log(request.params.id, typeof request.params.id)
+    Person
+      .findById(request.params.id)
+      .then(person => {
+        response.json(formatPerson(person))
+      })
+      .catch(error => {
+        console.log('person.find failed', error)
+        //response.status(404).end()
+      })
 })
 
-
-const generateId = () => {
-  return Math.round((Math.random() * 100000000))
-}
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
   //console.log('POST BODY', body)
   //console.log('POST HEADERS', request.headers)
 
-  const person = {
-    name: body.name,
-    phonenumber: body.phonenumber,
-    id: generateId()
-  }
-  //console.log('Person = ', person)
-
   if (body.name === "" || body.name === undefined || 
       body.phonenumber === "" || body.phonenumber === undefined)
     return response.status(400)
       .json({ error: 'name or phone number missing' })
-  else if (persons.findIndex(person => person.name === body.name) !== -1) {
+  /* else if (persons.findIndex(person => person.name === body.name) !== -1) {
     return response.status(400)
       .json({ error: 'name must be unique' })
-  }
+  } */
   else {
-    persons = persons.concat(person)
-    return response.status(200).end()  // Success
+    const person = new Person({
+      name: body.name,
+      phonenumber: body.phonenumber,
+    })
+
+    person
+      .save()
+      .then(savedPerson => {
+          console.log('lisätään henkilö ', person.name, ' numero ', person.phonenumber, ' luetteloon.')
+          //mongoose.connection.close()  // where is mongoose connection closed?
+          return response.json(formatPerson(savedPerson))
+          //return response.status(200).end()  // Success
+      })
+      .catch(error => 
+        {console.log('person.save failed', error)})
   }
 })
 
 app.delete('/api/persons/:id', (request, response) => {
     //console.log('DELETE HEADERS', request.headers)
-    const id = Number(request.params.id)
-    persons = persons.filter(person => person.id !== id)
-  
-    response.status(204).end()
+    //console.log(request.params.id, typeof request.params.id)
+    Person
+      .findByIdAndRemove(request.params.id)
+      .then(result => {
+        response.status(204).end()
+    })
+    .catch(error => {
+      console.log('person.delete failed', error)
+    })
 })
 
-//module.exports = () => { // module.exports is for Zeit's Now
-  const PORT = 3001
-  app.listen(PORT, () => {
+const PORT = process.env.PORT || 3001
+app.listen(PORT, () => {
     console.log(`Puhelinluettelo server running on port ${PORT}`)
-  })
-//}
-
-//module.exports = () => 'Ahoy, world!' 
+})
