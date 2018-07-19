@@ -28,13 +28,22 @@ app.get('/info', (req, res) => {
     })
     timezone = Intl.DateTimeFormat().resolvedOptions().timeZone
     //console.log(timestamp) //, timestamp.toString())
-    res.send(
-        '<h1>Hello World, this is Puhelinluettelo!</h1>' +
-        '<br/>' + '<div>puhelinluettelossa on ' +
-        persons.length +
-        ' henkilön tiedot</div></br>' +
-        timestamp + " " + timezone
-    )
+
+    Person.countDocuments({})
+      .then((count) => {
+        //console.log('No of documents in Person: ', count)
+        res.send(
+            '<h1>Hello World, this is Puhelinluettelo!</h1>' +
+            '<br/>' + '<div>Puhelinluettelossa on ' +
+            count +
+            ' henkilön tiedot.</div></br>' +
+            timestamp + " " + timezone
+        )
+      })
+      .catch((error) => {
+        console.log('Failed to fetch # of documents', error)
+        response.status(400).send({ error: 'Failed to fetch # of documents' })
+      })
 })
 
 app.get('/api/persons', (request, response) => {
