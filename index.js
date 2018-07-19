@@ -44,10 +44,10 @@ app.get('/api/persons', (request, response) => {
       .then(persons => {
         //console.log(persons)
         return response.json(persons.map(Person.format))
-    })
-    .catch(error => {
-      console.log('Get all persons failed', error)
-      //response.status(404).end()
+      })
+      .catch(error => {
+        console.log('Get all persons failed', error)
+        response.status(404).end()
     })
 })
   
@@ -56,14 +56,42 @@ app.get('/api/persons/:id', (request, response) => {
     Person
       .findById(request.params.id)
       .then(person => {
-        response.json(new Person.format(person))
+        if (person)
+          response.json(new Person.format(person))
+        else
+          response.status(404).end()
       })
       .catch(error => {
-        console.log('person.find failed', error)
-        //response.status(404).end()
+        console.log('app.get: person.find failed', error)
+        response.status(400).send({ error: 'malformatted id' })
       })
 })
 
+app.put('/api/persons/:id', (request, response) => {
+  //console.log(request.params.id, typeof request.params.id)
+  const person = {
+    name: request.body.name,
+    phonenumber: request.body.phonenumber
+  }
+
+  Person
+    .findByIdAndUpdate(request.params.id, person, { new: true })
+    .then(updatedPerson => {
+          if (updatedPerson) {
+            //console.log('päivitetään henkilön ', person.name, ' numero ', person.phonenumber, ' luetteloon.')
+            const p1 = new Person.format(updatedPerson)
+            //console.log(p1)
+            return response.json(p1)
+          }
+          else
+            response.status(404).end()      
+    })
+    .catch(error => {
+      console.log('app.put: person.find failed', error)
+      response.status(400).send({ error: 'malformatted id' })
+      //response.status(404).end()
+    })
+})
 
 app.post('/api/persons', (request, response) => {
   const body = request.body
@@ -87,7 +115,7 @@ app.post('/api/persons', (request, response) => {
     person
       .save()
       .then(savedPerson => {
-          console.log('lisätään henkilö ', person.name, ' numero ', person.phonenumber, ' luetteloon.')
+          //console.log('lisätään henkilö ', person.name, ' numero ', person.phonenumber, ' luetteloon.')
           //mongoose.connection.close()  // where is mongoose connection closed?
           const p1 = new Person.format(savedPerson)
           //console.log(p1)
@@ -109,6 +137,7 @@ app.delete('/api/persons/:id', (request, response) => {
     })
     .catch(error => {
       console.log('person.delete failed', error)
+      response.status(400).send({ error: 'malformatted id' })
     })
 })
 
