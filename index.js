@@ -131,8 +131,19 @@ app.post('/api/persons', (request, response) => {
           return response.json(p1)
           //return response.status(200).end()  // Success
       })
-      .catch(error => 
-        {console.log('person.save failed', error)})
+      .catch(error => {
+        console.log('person.save failed', error)
+        if (error.code = 11000) {  // UNIQUE INDEX DEFINED FOR COLLECTION'S NAME-FIELD IN DB ADMIN UI
+          console.log('person.save failed, as name is not unique', error)
+          return response.status(400)
+            .json({ error: 'name must be unique' })
+        }
+        else {
+          console.log('person.save failed', error)
+          return response.status(400)
+            .json({ error: 'person.save failed' })
+        }
+      })
   }
 })
 
