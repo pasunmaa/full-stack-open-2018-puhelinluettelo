@@ -88,9 +88,7 @@ app.put('/api/persons/:id', (request, response) => {
     .then(updatedPerson => {
       if (updatedPerson) {
         //console.log('päivitetään henkilön ', person.name, ' numero ', person.phonenumber, ' luetteloon.')
-        const p1 = new Person.format(updatedPerson)
-        //console.log(p1)
-        return response.json(p1)
+        return response.json(Person.format(updatedPerson))
       }
       else
         response.status(404).end()
@@ -126,9 +124,7 @@ app.post('/api/persons', (request, response) => {
       .then(savedPerson => {
         //console.log('lisätään henkilö ', person.name, ' numero ', person.phonenumber, ' luetteloon.')
         //mongoose.connection.close()  // where is mongoose connection closed?
-        const p1 = new Person.format(savedPerson)
-        //console.log(p1)
-        return response.json(p1)
+        return response.json(Person.format(savedPerson))
         //return response.status(200).end()  // Success
       })
       .catch(error => {

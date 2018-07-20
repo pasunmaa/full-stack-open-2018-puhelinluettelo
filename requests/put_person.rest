@@ -1,0 +1,7 @@
+PUT https://petria-puhelinluettelo-3-19.now.sh/api/persons/
+content-type: application/json
+
+{
+    "name": "Kalle Lehtinen",
+    "phonenumber": "040-99887766"
+}

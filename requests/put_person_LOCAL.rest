@@ -1,7 +1,7 @@
-PUT http://localhost:3001/api/persons/5b503290591a7c1bdc28d364
+PUT http://localhost:3001/api/persons/5b4f402145120a2f6caa4537
 content-type: application/json
 
 {
-    "name": "AAA",
-    "phonenumber": "040-11223344"
+    "name": "Kalle Lehtinen",
+    "phonenumber": "040-11227766"
 }
