@@ -14,10 +14,11 @@
     "url": "git+https://github.com/pasunmaa/full-stack-open-2018-puhelinluettelo.git"
   },
   "now": {
-    "alias": "petria-puhelinluettelo-3-19",
+    "alias": "petria-puhelinluettelo-3-21",
     "env": {
       "DbUserPuhLuet": "@dbuserpuhluet-key",
-      "DbPasswordPuhLuet": "@dbpasswordpuhluet-key"
+      "DbPasswordPuhLuet": "@dbpasswordpuhluet-key",
+      "NODE_ENV": "production"
     }
   },
   "keywords": [
@@ -34,11 +35,11 @@
   "dependencies": {
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "morgan": "^1.9.0",
     "micro": "latest",
     "mongoose": "^5.2.3"
   },
   "devDependencies": {
-    "morgan": "^1.9.0",
     "nodemon": "^1.18.1"
   }
 }

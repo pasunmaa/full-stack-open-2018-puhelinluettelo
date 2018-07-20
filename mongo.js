@@ -4,11 +4,16 @@ const mongoose = require('mongoose')
 // const url = 'mongodb://<dbuser>:<dbpassword>@ds139341.mlab.com:39341/puhelinluettelo'
 // Luetaan dbuser ja dbpassword ympäristömuuttujista, joita ei tallenneta Githubiin
 // console.log(process.env.DbUserPuhLuet+':'+process.env.DbPasswordPuhLuet)
-const url = 'mongodb://' + 
+let url = 'mongodb://' + 
     process.env.DbUserPuhLuet + ':' +
-    process.env.DbPasswordPuhLuet + 
-    '@ds139341.mlab.com:39341/puhelinluettelo'
-// const url = 'mongodb://fullstack:sekred@ds211088.mlab.com:11088/fullstack-notes'
+    process.env.DbPasswordPuhLuet
+
+if (process.env.NODE_ENV === 'production')
+    url = url.concat('@ds139341.mlab.com:39341/puhelinluettelo')
+else
+    url = url.concat('@ds245478.mlab.com:45478/puhelinluettelo_dev')
+
+//console.log('url = ', url)
 
 mongoose.connect(url, { useNewUrlParser: true })
 
